@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
-import { CommonValidators } from "../common/common-validators";
+import { CommonValidators, IFormComponent } from "../common";
 
 @Component({
   selector: 'app-user-editor',
   templateUrl: './user-editor.component.html',
   styleUrls: ['./user-editor.component.css']
 })
-export class UserEditorComponent implements OnInit {
+export class UserEditorComponent implements IFormComponent, OnInit {
   formGroup: FormGroup;
 
   constructor(formBuilder: FormBuilder) {
@@ -23,6 +23,10 @@ export class UserEditorComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  hasUnsavedChanges() {
+    return this.formGroup.dirty;
   }
 
   addUser() {

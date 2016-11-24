@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from "@angular/router";
 import { UsersComponent } from "./users.component";
 import { UserEditorComponent } from "./user-editor.component";
+import { PreventUnsavedChangesGuard } from "../common";
 
 const usersRoutes: Routes = [
     {
@@ -10,7 +11,8 @@ const usersRoutes: Routes = [
     },
     { 
       path: 'users/new', 
-      component: UserEditorComponent 
+      component: UserEditorComponent,
+      canDeactivate: [ PreventUnsavedChangesGuard ]
     }
 ];
 
@@ -21,6 +23,6 @@ const usersRoutes: Routes = [
   exports: [
     RouterModule
   ],
-  providers: [ ]
+  providers: [ PreventUnsavedChangesGuard ]
 })
 export class UsersRoutingModule {}
