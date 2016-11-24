@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from "@angular/router";
+import { UsersRoutingModule } from "../users/users-routing.module";
 import { PostsComponent } from "../posts/posts.component";
-import { UsersComponent } from "../users/users.component";
 import { HomeComponent } from "../home/home.component";
 
 const appRoutes: Routes = [
@@ -13,16 +13,13 @@ const appRoutes: Routes = [
       path: 'posts', 
       component: PostsComponent 
     },
-    {
-      path: 'users', 
-      component: UsersComponent
-    },
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];
 
 @NgModule({
   imports: [
+    UsersRoutingModule,
     RouterModule.forRoot(appRoutes)
   ],
   exports: [
