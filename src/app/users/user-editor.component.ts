@@ -13,7 +13,6 @@ import { Subscription }   from 'rxjs/Subscription';
 })
 export class UserEditorComponent implements IFormComponent, OnInit {
   formGroup: FormGroup;
-  private _userId: number;
   private user: IUser = new User();
   @Input() pageTitle: string = "Edit User";
   private _routeSubscription: Subscription;
@@ -35,16 +34,18 @@ export class UserEditorComponent implements IFormComponent, OnInit {
   }
 
   ngOnInit() {
+    let userId: number;
+
     this._routeSubscription = this._route.params.subscribe((params) => {
-      this._userId = +params['id'];
+      userId = +params['id'];
     });
 
-    if (!this._userId) {
+    if (!userId) {
       this.pageTitle = "Add User";
       return;
     }
 
-    this._service.getUser(this._userId)
+    this._service.getUser(userId)
       .subscribe(
         user => { this.user = user; },
         response => {}
@@ -58,7 +59,7 @@ export class UserEditorComponent implements IFormComponent, OnInit {
   processUser() {
     let response;
 
-    if (this._userId) {
+    if (this.user.id == null) {
       response = this._service.addUser(this.user);
     } else {
       response = this._service.updateUser(this.user);

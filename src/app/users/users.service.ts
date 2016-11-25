@@ -14,7 +14,7 @@ export class UsersService {
 
   updateUser(user: IUser): Observable<IUser> {
     return this._http
-      .put(this._usersUrl, JSON.stringify(user))
+      .put(this.getUserUrl(user.id), JSON.stringify(user))
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -32,23 +32,32 @@ export class UsersService {
   }
 
   getUser(userId: number): Observable<IUser> {
-    return this._http.get(`${this._usersUrl}/${userId}`)
+    return this._http.get(this.getUserUrl(userId))
       .map(response => this.extractData(response))
       .catch(this.handleError);
   }
 
-  getUsers(): Observable<IUser []> {
+  getUsers(): Observable<IUser[]> {
     return this._http.get(this._usersUrl)
       .map(response => response.json())
       .catch(this.handleError);
   }
 
-  private extractData(res: Response) {
-    return res.json() || { };
+  deleteUser(userId) {
+    return this._http.delete(this.getUserUrl(userId))
+      .map(res => res.json());
   }
 
-  private handleError (error: Response | any) {
-  // In a real world app, we might use a remote logging infrastructure
+  private getUserUrl(userId) {
+    return `${this._usersUrl}/${userId}`;
+  }
+
+  private extractData(res: Response) {
+    return res.json() || {};
+  }
+
+  private handleError(error: Response | any) {
+    // In a real world app, we might use a remote logging infrastructure
     let errMsg: string;
     if (error instanceof Response) {
       const body = error.json() || '';
