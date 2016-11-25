@@ -9,6 +9,11 @@ const usersRoutes: Routes = [
       path: 'users', 
       component: UsersComponent
     },
+    {
+      path: 'users/:id', 
+      component: UserEditorComponent,
+      canDeactivate: [ PreventUnsavedChangesGuard ]
+    },
     { 
       path: 'users/new', 
       component: UserEditorComponent,

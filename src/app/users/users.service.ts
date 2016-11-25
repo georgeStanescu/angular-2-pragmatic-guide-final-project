@@ -12,13 +12,28 @@ export class UsersService {
   constructor(private _http: Http) {
   }
 
-  saveUser(user: IUser): Observable<IUser> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-
+  updateUser(user: IUser): Observable<IUser> {
     return this._http
-      .post(this._usersUrl, JSON.stringify(user), options)
+      .put(this._usersUrl, JSON.stringify(user))
       .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  private getRequestOptions(): RequestOptions {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    return new RequestOptions({ headers: headers });
+  }
+
+  addUser(user: IUser): Observable<IUser> {
+    return this._http
+      .post(this._usersUrl, JSON.stringify(user), this.getRequestOptions())
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getUser(userId: number): Observable<IUser> {
+    return this._http.get(`${this._usersUrl}/${userId}`)
+      .map(response => this.extractData(response))
       .catch(this.handleError);
   }
 
