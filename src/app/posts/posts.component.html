@@ -1,9 +1,5 @@
 <h1>{{ pageTitle }}</h1>
-
-<div *ngIf="isLoading">
-  <i class="fa fa-spinner fa-spin fa-3x"></i>
-</div>
-
+<app-spinner [visible]="isLoading"></app-spinner>
 <div class="row" *ngIf="!isLoading">
   <div class="col-md-6">
     <ul class="list-group">
