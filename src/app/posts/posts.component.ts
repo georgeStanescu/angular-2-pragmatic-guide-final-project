@@ -9,6 +9,7 @@ import { Post } from "./post";
 })
 export class PostsComponent implements OnInit {
   posts: Post[];
+  pageTitle = "List of Posts";
   isLoading: boolean = true;
 
   constructor(private _service: PostsService) { }
