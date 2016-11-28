@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PostsService } from "./posts.service";
+import { UsersService } from "../users/users.service";
 import { Post } from "./post";
+import { IUser } from "../users/user";
 
 @Component({
   selector: 'app-posts',
@@ -9,15 +11,31 @@ import { Post } from "./post";
 })
 export class PostsComponent implements OnInit {
   posts: Post[];
+  users: IUser[] = [];
   pageTitle = "List of Posts";
-  postsLoading: boolean = true;
+  postsLoading: boolean;
   selectedPost: Post = null;
   commentsLoading: boolean = false;
 
-  constructor(private _service: PostsService) { }
+  constructor(private _service: PostsService, private _usersService: UsersService) { }
 
   ngOnInit() {
-    this._service.getPosts()
+    this.loadUsers();
+
+    this.loadPosts();
+  }
+
+  private loadUsers() {
+    this._usersService.getUsers()
+    .subscribe(users => {
+      this.users = users;
+    });
+  }
+
+  private loadPosts(filter?) {
+    this.postsLoading = true;
+
+    this._service.getPosts(filter)
       .subscribe(posts => {
         this.posts = posts;
       },
@@ -42,4 +60,9 @@ export class PostsComponent implements OnInit {
       });
   }
 
+  reloadPosts(filter) {
+    this.selectedPost = null;
+
+    this.loadPosts(filter);
+  }
 }

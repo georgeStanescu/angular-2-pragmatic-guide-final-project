@@ -1,7 +1,11 @@
 <h1>{{ pageTitle }}</h1>
-<app-spinner [visible]="postsLoading"></app-spinner>
-<div class="row" *ngIf="!postsLoading">
+<div class="row">
+  <select class="form-control" (change)="reloadPosts({ userId: selectedUser.value })" #selectedUser>
+    <option value="">Select a user...</option>
+    <option *ngFor="let user of users" value="{{ user.id }}">{{ user.name }}</option>
+  </select>
   <div class="col-md-6">
+    <app-spinner [visible]="postsLoading"></app-spinner>
     <ul class="list-group posts">
       <li class="list-group-item" *ngFor="let post of posts, let i = index" [class.active]="selectedPost == post" (click)="onPostClicked(i)">
         {{ post.title }}
