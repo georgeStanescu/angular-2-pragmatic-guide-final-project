@@ -10,8 +10,9 @@ import { Post } from "./post";
 export class PostsComponent implements OnInit {
   posts: Post[];
   pageTitle = "List of Posts";
-  isLoading: boolean = true;
+  postsLoading: boolean = true;
   selectedPost: Post = null;
+  commentsLoading: boolean = false;
 
   constructor(private _service: PostsService) { }
 
@@ -22,16 +23,22 @@ export class PostsComponent implements OnInit {
       },
       null,
       () => {
-        this.isLoading = false;
+        this.postsLoading = false;
       });
   }
 
   onPostClicked(selectedIndex: number) {
     this.selectedPost = this.posts[selectedIndex];
+    this.selectedPost.comments = [];
+    this.commentsLoading = true;
 
     this._service.getCommentsForPost(selectedIndex)
-      .subscribe(coms => {
-        this.selectedPost.comments = coms;
+      .subscribe(comments => {
+        this.selectedPost.comments = comments;
+      },
+      null,
+      () => {
+        this.commentsLoading = false;
       });
   }
 

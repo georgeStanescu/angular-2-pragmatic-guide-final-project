@@ -6,8 +6,4 @@ export class Post {
   title: string;
   body: string;
   comments: Comment[];
-
-  constructor() {
-    this.comments = [];
-  }
 }

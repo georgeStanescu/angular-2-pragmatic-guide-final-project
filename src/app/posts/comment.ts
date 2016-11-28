@@ -1,6 +1,6 @@
 export class Comment {
   postId: number;
-  Id: number;
+  id: number;
   name: string;
   email: string;
   body: string;
