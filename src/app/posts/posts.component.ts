@@ -3,6 +3,7 @@ import { PostsService } from "./posts.service";
 import { UsersService } from "../users/users.service";
 import { Post } from "./post";
 import { IUser } from "../users/user";
+import * as _ from 'underscore';
 
 @Component({
   selector: 'app-posts',
@@ -23,6 +24,8 @@ export class PostsComponent implements OnInit {
     this.loadUsers();
 
     this.loadPosts();
+
+    console.log(_.isNumber(7));
   }
 
   private loadUsers() {
