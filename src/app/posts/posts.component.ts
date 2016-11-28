@@ -11,6 +11,7 @@ export class PostsComponent implements OnInit {
   posts: Post[];
   pageTitle = "List of Posts";
   isLoading: boolean = true;
+  selectedPost: Post = null;
 
   constructor(private _service: PostsService) { }
 
@@ -22,6 +23,15 @@ export class PostsComponent implements OnInit {
       null,
       () => {
         this.isLoading = false;
+      });
+  }
+
+  onPostClicked(selectedIndex: number) {
+    this.selectedPost = this.posts[selectedIndex];
+
+    this._service.getCommentsForPost(selectedIndex)
+      .subscribe(coms => {
+        this.selectedPost.comments = coms;
       });
   }
 

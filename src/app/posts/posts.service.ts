@@ -15,7 +15,13 @@ export class PostsService {
   
   getPosts(): Observable<Post []> {
     return this._http.get(this._url)
-      .map(response => response.json())
+      .map(response => this.extractData(response))
+      .catch(this.handleError);
+  }
+
+  getCommentsForPost(postId: number): Observable<Comment []> {
+    return this._http.get(`${this._url}/${postId}/comments`)
+      .map(response => this.extractData(response))
       .catch(this.handleError);
   }
 

@@ -2,11 +2,31 @@
 <app-spinner [visible]="isLoading"></app-spinner>
 <div class="row" *ngIf="!isLoading">
   <div class="col-md-6">
-    <ul class="list-group">
-      <li class="list-group-item" *ngFor="let post of posts">
+    <ul class="list-group posts">
+      <li class="list-group-item" *ngFor="let post of posts, let i = index" [class.active]="selectedPost == post" (click)="onPostClicked(i)">
         {{ post.title }}
       </li>
     </ul>
   </div>
+  <div class="col-md-6" *ngIf="selectedPost">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{ selectedPost.title }}</h3>
+      </div>
+      <div class="panel-body">
+        {{ selectedPost.body }}
+      </div>
+    </div>
+    <div class="media" *ngFor="let comment of selectedPost.comments">
+      <div class="media-left">
+        <a>
+          <img class="media-object thumbnail" src="http://lorempixel.com/80/80/people/?random={{ comment.id }}">
+        </a>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">{{ comment.name }}</h4>
+        <div>{{ comment.body }}</div>
+      </div>
+    </div>
+  </div>
 </div>
-
