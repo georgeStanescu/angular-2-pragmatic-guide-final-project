@@ -6,8 +6,9 @@
   </select>
   <div class="col-md-6">
     <app-spinner [visible]="postsLoading"></app-spinner>
+    <app-pagination [items]="posts" (pageChanged)="onPageChanged($event)"></app-pagination>
     <ul class="list-group posts">
-      <li class="list-group-item" *ngFor="let post of posts, let i = index" [class.active]="selectedPost == post" (click)="onPostClicked(i)">
+      <li class="list-group-item" *ngFor="let post of pagedPosts, let i = index" [class.active]="selectedPost == post" (click)="onPostClicked(i)">
         {{ post.title }}
       </li>
     </ul>

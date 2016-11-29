@@ -11,12 +11,14 @@ import * as _ from 'underscore';
   styleUrls: ['./posts.component.css']
 })
 export class PostsComponent implements OnInit {
-  posts: Post[];
+  posts: Post[] = [];
   users: IUser[] = [];
   pageTitle = "List of Posts";
   postsLoading: boolean;
   selectedPost: Post = null;
   commentsLoading: boolean = false;
+  pagedPosts: Post[] = [];
+  pageSize = 10;
 
   constructor(private _service: PostsService, private _usersService: UsersService) { }
 
@@ -24,15 +26,13 @@ export class PostsComponent implements OnInit {
     this.loadUsers();
 
     this.loadPosts();
-
-    console.log(_.isNumber(7));
   }
 
   private loadUsers() {
     this._usersService.getUsers()
-    .subscribe(users => {
-      this.users = users;
-    });
+      .subscribe(users => {
+        this.users = users;
+      });
   }
 
   private loadPosts(filter?) {
@@ -41,6 +41,7 @@ export class PostsComponent implements OnInit {
     this._service.getPosts(filter)
       .subscribe(posts => {
         this.posts = posts;
+        this.pagedPosts = this.getPostsInPage(1);
       },
       null,
       () => {
@@ -67,5 +68,21 @@ export class PostsComponent implements OnInit {
     this.selectedPost = null;
 
     this.loadPosts(filter);
+  }
+
+  onPageChanged(page) {
+    this.pagedPosts = this.getPostsInPage(page);
+  }
+
+  private getPostsInPage(page) {
+    let result = [];
+    let startingIndex = (page - 1) * this.pageSize;
+    let endIndex = Math.min(startingIndex + this.pageSize, this.posts.length);
+
+    for (let i = startingIndex; i < endIndex; i++) {
+      result.push(this.posts[i]);
+    }
+
+    return result;
   }
 }
