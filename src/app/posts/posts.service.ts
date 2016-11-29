@@ -4,6 +4,7 @@ import { Http, Response } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
+import { Comment } from "./comment";
 
 @Injectable()
 export class PostsService {
@@ -27,7 +28,7 @@ export class PostsService {
 
   getCommentsForPost(postId: number): Observable<Comment []> {
     return this._http.get(`${this._url}/${postId}/comments`)
-      .map(response => this.extractData(response))
+      .map((response: Response) => <Comment []> this.extractData(response))
       .catch(this.handleError);
   }
 
