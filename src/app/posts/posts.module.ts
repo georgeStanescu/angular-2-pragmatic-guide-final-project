@@ -5,7 +5,6 @@ import { PostsComponent } from './posts.component';
 import { PostsService } from "./posts.service";
 import { UsersModule } from "../users/users.module";
 import { DropdownModule } from 'ng2-bootstrap/ng2-bootstrap';
-import { PaginationComponent } from './pagination.component';
 
 @NgModule({
   imports: [
@@ -15,8 +14,7 @@ import { PaginationComponent } from './pagination.component';
     DropdownModule
   ],
   declarations: [
-    PostsComponent,
-    PaginationComponent
+    PostsComponent
   ],
   exports: [
     PostsComponent
