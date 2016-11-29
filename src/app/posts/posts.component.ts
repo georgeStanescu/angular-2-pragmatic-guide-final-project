@@ -18,7 +18,7 @@ export class PostsComponent implements OnInit {
   selectedPost: Post = null;
   commentsLoading: boolean = false;
   pagedPosts: Post[] = [];
-  pageSize = 10;
+  pageSize = 5;
 
   constructor(private _service: PostsService, private _usersService: UsersService) { }
 
@@ -41,7 +41,7 @@ export class PostsComponent implements OnInit {
     this._service.getPosts(filter)
       .subscribe(posts => {
         this.posts = posts;
-        this.pagedPosts = this.getPostsInPage(1);
+        this.pagedPosts = _.take(this.posts, this.pageSize);
       },
       null,
       () => {
@@ -70,19 +70,8 @@ export class PostsComponent implements OnInit {
     this.loadPosts(filter);
   }
 
-  onPageChanged(page) {
-    this.pagedPosts = this.getPostsInPage(page);
-  }
-
-  private getPostsInPage(page) {
-    let result = [];
-    let startingIndex = (page - 1) * this.pageSize;
-    let endIndex = Math.min(startingIndex + this.pageSize, this.posts.length);
-
-    for (let i = startingIndex; i < endIndex; i++) {
-      result.push(this.posts[i]);
-    }
-
-    return result;
+  onPageChanged(page: number) {
+    let startIndex = (page - 1) * this.pageSize;
+    this.pagedPosts = _.take(_.rest(this.posts, startIndex), this.pageSize);
   }
 }
